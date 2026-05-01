@@ -9,32 +9,34 @@ module.exports = {
 
 		/* MUTE */
 		const createtMute = (cat, lab, typ, cnt, ofs) => {
-			var tmp = []
-
 			for (var i = 0; i < cnt; i++) {
 				let pst = {
+					type: 'button',
 					category: cat,
-					label: lab,
-					bank: {
-						style: 'text',
+					name: lab,
+					style: {
 						text: `\$(QU:ch_name_${ofs + i})\\nMute`,
 						size: 'auto',
 						color: this.rgb(255, 255, 255),
 						bgcolor: this.rgb(0, 0, 0),
-						latch: false,
 					},
-					actions: [
+					steps: [
 						{
-							action: typ,
-							options: {
-								channel: i,
-								mute: 0,
-							},
+							down: [
+								{
+									actionId: typ,
+									options: {
+										channel: i,
+										mute: 0,
+									},
+								},
+							],
+							up: [],
 						},
 					],
 					feedbacks: [
 						{
-							type: typ,
+							feedbackId: typ,
 							options: {
 								channel: i,
 							},
@@ -64,32 +66,34 @@ module.exports = {
 
 		/* PAFL */
 		const createtPAFL = (cat, lab, typ, cnt, ofs) => {
-			var tmp = []
-
 			for (var i = 0; i < cnt; i++) {
 				let pst = {
+					type: 'button',
 					category: cat,
-					label: lab,
-					bank: {
-						style: 'text',
+					name: lab,
+					style: {
 						text: `\$(QU:ch_name_${ofs + i})\\nPAFL`,
 						size: 'auto',
 						color: this.rgb(255, 255, 255),
 						bgcolor: this.rgb(0, 0, 0),
-						latch: false,
 					},
-					actions: [
+					steps: [
 						{
-							action: typ,
-							options: {
-								channel: i,
-								pafl: 0,
-							},
+							down: [
+								{
+									actionId: typ,
+									options: {
+										channel: i,
+										pafl: 0,
+									},
+								},
+							],
+							up: [],
 						},
 					],
 					feedbacks: [
 						{
-							type: typ,
+							feedbackId: typ,
 							options: {
 								channel: i,
 							},

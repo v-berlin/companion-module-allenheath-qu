@@ -1,52 +1,35 @@
 /**
  *
  * Companion instance class for the Allen & Heath QU.
- * Version 1.0.7
- * Author Max Kiusso <max@kiusso.net>
+ * Version 2.0.0 – ported to @companion-module/base (Companion 4 compatible)
  *
- * 2021-03-01	Version 1.0.0
+ * Original author: Max Kiusso <max@kiusso.net>
  *
- * 2021-03-04	Version 1.0.1
- *			- Fix level
- *			- New variables
- *			- Presets
- *
- * 2021-03-05	Version 1.0.3
- *			- Fix feedbacks
- * 			- Remove all system.emit
- *			- Add PAFL feedbacks
- *			- Add PAFL presets
- *
- * 2021-03-11	Version 1.0.4
- *			- Add scene step
- *			- Add currentScene variable
- *
- * 2021-03-15	Version 1.0.5
- *			- Fix issue #6
- *
- * 2021-03-21	Version 1.0.6
- *			- Fix issue #9
- *
- * 2021-06-19	Version 1.0.7
- *			- Add QU-Pac & QU-SB config
- *			- Add shutdown action
+ * Changelog:
+ * 2021-03-01	Version 1.0.0  – Initial release
+ * 2021-03-04	Version 1.0.1  – Fix level, new variables, presets
+ * 2021-03-05	Version 1.0.3  – Fix feedbacks, remove system.emit, add PAFL
+ * 2021-03-11	Version 1.0.4  – Add scene step, currentScene variable
+ * 2021-03-15	Version 1.0.5  – Fix issue #6
+ * 2021-03-21	Version 1.0.6  – Fix issue #9
+ * 2021-06-19	Version 1.0.7  – Add QU-Pac & QU-SB config, shutdown action
+ * 2024-xx-xx	Version 2.0.0  – Port to @companion-module/base SDK (Companion 4)
  */
 
-let tcp = require('../../tcp')
-let instance_skel = require('../../instance_skel')
-let actions = require('./actions')
-let feedbacks = require('./feedbacks')
-let variables = require('./variables')
-let presets = require('./presets')
+const { InstanceBase, runEntrypoint, TCPHelper, combineRgb, InstanceStatus, Regex } = require('@companion-module/base')
+const actions = require('./actions')
+const feedbacks = require('./feedbacks')
+const variables = require('./variables')
+const presets = require('./presets')
 
 const level = require('./level.json')
 const quconfig = require('./quconfig.json')
 const MIDI = 51325
 const SysexHeader = [0xf0, 0x00, 0x00, 0x1a, 0x50, 0x11, 0x01, 0x00, 0x00]
 
-class instance extends instance_skel {
-	constructor(system, id, config) {
-		super(system, id, config)
+class QUInstance extends InstanceBase {
+	constructor(internal) {
+		super(internal)
 
 		Object.assign(this, {
 			...variables,
@@ -56,25 +39,75 @@ class instance extends instance_skel {
 		})
 
 		this.fdbState = {}
+
+		// Compatibility shims for legacy v2-style calls used in mixins
+		this.rgb = combineRgb
+		this.REGEX_IP = Regex.IP
+		this.setVariable = (id, val) => this.setVariableValues({ [id]: val })
+		this.getVariable = (id, callback) => {
+			callback(this.getVariableValue(id))
+		}
 	}
 
-	actions(system) {
-		this.setActions(this.getActions())
+	async init(config) {
+		this.config = config
+		this.updateStatus(InstanceStatus.Connecting)
+
+		this.setupVariables()
+		this.setupActions()
+		this.setupFeedbacks()
+		this.setupPresets()
+		this.init_tcp()
 	}
 
-	feedbacks(system) {
+	async destroy() {
+		clearInterval(this.connItv)
+
+		if (this.midiSocket !== undefined) {
+			this.midiSocket.destroy()
+			delete this.midiSocket
+		}
+
+		this.log('debug', `destroyed ${this.id}`)
+	}
+
+	async configUpdated(config) {
+		this.config = config
+
+		this.setupVariables()
+		this.setupActions()
+		this.setupFeedbacks()
+		this.setupPresets()
+		this.init_tcp()
+	}
+
+	setupActions() {
+		const actionDefs = this.getActions()
+		const actionDefinitions = {}
+		for (const [id, def] of Object.entries(actionDefs)) {
+			actionDefinitions[id] = {
+				...def,
+				callback: async (action) => {
+					this.executeAction({ action: id, options: action.options })
+				},
+			}
+		}
+		this.setActionDefinitions(actionDefinitions)
+	}
+
+	setupFeedbacks() {
 		this.setFeedbackDefinitions(this.getFeedbacks())
 	}
 
-	variables(system) {
+	setupVariables() {
 		this.setVariableDefinitions(this.getVariables())
 	}
 
-	presets(system) {
+	setupPresets() {
 		this.setPresetDefinitions(this.getPresets())
 	}
 
-	action(action) {
+	executeAction(action) {
 		var opt = action.options
 		let channel = parseInt(opt.channel)
 		let CH
@@ -365,8 +398,7 @@ class instance extends instance_skel {
 
 		for (let i = 0; i < cmd.buffers.length; i++) {
 			if (cmd.port === MIDI && this.midiSocket !== undefined) {
-				//console.log(cmd.buffers[i]);
-				this.midiSocket.write(cmd.buffers[i])
+				this.midiSocket.send(cmd.buffers[i])
 			}
 		}
 	}
@@ -376,7 +408,7 @@ class instance extends instance_skel {
 		var qu = quconfig['config'][self.config.model]
 		var scn
 
-		self.getVariable('currentScene', function(res) {
+		self.getVariable('currentScene', function (res) {
 			scn = parseInt(res) - 1 + val
 			if (scn < 0) scn = 0
 			if (scn > qu['sceneCount']) scn = qu['sceneCount'] - 1
@@ -578,7 +610,7 @@ class instance extends instance_skel {
 
 		for (let i = 0; i < cmd.length; i++) {
 			if (this.midiSocket !== undefined) {
-				this.midiSocket.write(cmd[i])
+				this.midiSocket.send(cmd[i])
 			}
 		}
 	}
@@ -591,7 +623,7 @@ class instance extends instance_skel {
 
 			for (let b = 0; b < data.length; b++) {
 				// SysEx Header f0 00 00 1a 50 11 01 00 00 | 02 | 20
-				// Verfy if is a SysEx response
+				// Verify if is a SysEx response
 				if (data[b] == 240 && JSON.stringify(data.slice(b, b + 9)) == JSON.stringify(SysexHeader)) {
 					/* Channel Name*/
 					for (j = b; j < data.length; j++) {
@@ -607,7 +639,6 @@ class instance extends instance_skel {
 						}
 
 						if (str.charCodeAt(0) != 0) {
-							//console.log(`${str} - ${vl[10]}`);
 							self.setVariable('ch_name_' + vl[10], str)
 						}
 					}
@@ -632,7 +663,6 @@ class instance extends instance_skel {
 					if (dt[1] == 99 && dt[5] == 32) {
 						let rt = self.getChannel(dt[2])
 						let vx = self.getSend(dt[11])
-						//console.log(`sendlev_${rt[0]}_${dt[2]}_${vx[0]}_${dt[11]} -> ${vl}`);
 						self.setVariable(`sendlev_${rt[0]}_${vx[0]}_${dt[2]}_${dt[11]}`, self.getLevel(dt[8]))
 					}
 
@@ -646,18 +676,18 @@ class instance extends instance_skel {
 					if (dt[1] == 0 && dt[2] == 0 && dt[4] == 32 && dt[5] == 0) {
 						self.setVariable('currentScene', parseInt(dt[7]) + 1)
 					}
-				} else if (data[b] == 192 && 0 <= data[b+1] && data[b+1] <= 99) {
+				} else if (data[b] == 192 && 0 <= data[b + 1] && data[b + 1] <= 99) {
 					/* Scene */
-					self.setVariable('currentScene', parseInt(data[b+1]) + 1)
+					self.setVariable('currentScene', parseInt(data[b + 1]) + 1)
 				}
 			}
 		}
 	}
 
-	config_fields() {
+	getConfigFields() {
 		return [
 			{
-				type: 'text',
+				type: 'static-text',
 				id: 'info',
 				width: 12,
 				label: 'Information',
@@ -669,7 +699,7 @@ class instance extends instance_skel {
 				label: 'Target IP',
 				width: 6,
 				default: '192.168.0.6',
-				regex: this.REGEX_IP,
+				regex: Regex.IP,
 			},
 			{
 				type: 'dropdown',
@@ -688,25 +718,6 @@ class instance extends instance_skel {
 		]
 	}
 
-	destroy() {
-		clearInterval(this.connItv);
-
-		if (this.tcpSocket !== undefined) {
-			this.tcpSocket.destroy()
-		}
-
-		if (this.midiSocket !== undefined) {
-			this.midiSocket.destroy()
-		}
-
-		this.log('debug', `destroyed ${this.id}`)
-	}
-
-	init() {
-		this.updateConfig(this.config)
-		this.setVariable('currentScene', 0)
-	}
-
 	init_tcp() {
 		var self = this
 		this.chk = false
@@ -717,25 +728,28 @@ class instance extends instance_skel {
 		}
 
 		if (this.config.host) {
-			this.midiSocket = new tcp(this.config.host, MIDI)
-
-			this.midiSocket.on('status_change', (status, message) => {
-				this.status(status, message)
-			})
+			this.midiSocket = new TCPHelper(this.config.host, MIDI)
 
 			this.midiSocket.on('error', (err) => {
 				this.log('error', 'MIDI error: ' + err.message)
+				this.updateStatus(InstanceStatus.ConnectionFailure, err.message)
 				this.chk = false
+			})
+
+			this.midiSocket.on('end', () => {
+				this.updateStatus(InstanceStatus.Disconnected)
+				clearInterval(this.connItv)
 			})
 
 			this.midiSocket.on('connect', () => {
 				this.log('debug', `MIDI Connected to ${this.config.host}`)
+				this.updateStatus(InstanceStatus.Ok)
 
-				this.midiSocket.write(Buffer.from(SysexHeader.concat([0x10, 1, 0xf7])))
+				this.midiSocket.send(Buffer.from(SysexHeader.concat([0x10, 1, 0xf7])))
 				this.getNames()
 
 				this.connItv = setInterval(function () {
-					self.midiSocket.write(Buffer.from([0xfe]))
+					self.midiSocket.send(Buffer.from([0xfe]))
 				}, 1000)
 			})
 
@@ -744,26 +758,15 @@ class instance extends instance_skel {
 				let dt = JSON.parse(JSON.stringify(data))['data']
 				if (dt.length > 1) {
 					adat = adat.concat(dt)
-					//console.log(adat);
 					if ([247, 254, 0, 7].includes(adat[adat.length - 1])) {
 						this.getRemoteValue(adat)
-						//console.log(adat);
 						adat = []
 					}
 				}
 			})
 		}
 	}
-
-	updateConfig(config) {
-		this.config = config
-
-		this.variables()
-		this.actions()
-		this.feedbacks()
-		this.presets()
-		this.init_tcp()
-	}
 }
 
-exports = module.exports = instance
+runEntrypoint(QUInstance, [])
+
