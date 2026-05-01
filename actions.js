@@ -318,45 +318,45 @@ module.exports = {
 
 		/* MUTE */
 		actions['mute_input'] = {
-			label: 'Mute Input',
+			name: 'Mute Input',
 			options: this.muteOptions('Input Channel', qu['chCount'], -1),
 		}
 		actions['mute_stereo'] = {
-			label: 'Mute Stereo',
+			name: 'Mute Stereo',
 			options: this.muteOptions('Stereo Channel', qu['chStereo'], -1),
 		}
 		actions['mute_lr'] = {
-			label: 'Mute LR',
+			name: 'Mute LR',
 			options: this.muteOptions('LR', 1, -1),
 		}
 		actions['mute_mix'] = {
-			label: 'Mute Mix',
+			name: 'Mute Mix',
 			options: this.muteOptions('Mix', qu['mixCount'], -1, qu['mixStereo']),
 		}
 		actions['mute_fx_send'] = {
-			label: 'Mute FX Send',
+			name: 'Mute FX Send',
 			options: this.muteOptions('FX Send', qu['fxsCount'], -1),
 		}
 		actions['mute_fx_return'] = {
-			label: 'Mute FX Return',
+			name: 'Mute FX Return',
 			options: this.muteOptions('FX Return', qu['fxrCount'], -1),
 		}
 		actions['mute_dca'] = {
-			label: 'Mute DCA',
+			name: 'Mute DCA',
 			options: this.muteOptions('DCA', qu['dcaCount'], -1),
 		}
 		actions['mute_mutegroup'] = {
-			label: 'Mute MuteGroup',
+			name: 'Mute MuteGroup',
 			options: this.muteOptions('Mute MuteGroup', qu['muteGroup'], -1),
 		}
 
 		if (this.config.model != 'QU16') {
 			actions['mute_group'] = {
-				label: 'Mute Group',
+				name: 'Mute Group',
 				options: this.muteOptions('Group', qu['grpCount'], -1, 99),
 			}
 			actions['mute_matrix'] = {
-				label: 'Mute Matrix',
+				name: 'Mute Matrix',
 				options: this.muteOptions('Matrix', qu['mtxCount'], -1, 99),
 			}
 		}
@@ -364,40 +364,40 @@ module.exports = {
 
 		/* FADER LEVEL*/
 		actions['level_input'] = {
-			label: 'Input Fader Level',
+			name: 'Input Fader Level',
 			options: this.faderOptions('Input Channel', qu['chCount'], -1),
 		}
 		actions['level_stereo'] = {
-			label: 'Stereo Fader Level',
+			name: 'Stereo Fader Level',
 			options: this.faderOptions('Stereo Channel', qu['chStereo'], -1),
 		}
 		actions['level_lr'] = {
-			label: 'LR Fadel Level',
+			name: 'LR Fader Level',
 			options: this.faderOptions('LR', 1, -1),
 		}
 		actions['level_mix'] = {
-			label: 'Mix Fader Level',
+			name: 'Mix Fader Level',
 			options: this.faderOptions('Mix', qu['mixCount'], -1, qu['mixStereo']),
 		}
 		actions['level_fx_send'] = {
-			label: 'FX Send Fader Level',
+			name: 'FX Send Fader Level',
 			options: this.faderOptions('FX Send', qu['fxsCount'], -1),
 		}
 		actions['level_fx_return'] = {
-			label: 'FX Return Fader Level',
+			name: 'FX Return Fader Level',
 			options: this.faderOptions('FX Return', qu['fxrCount'], -1),
 		}
 		actions['level_dca'] = {
-			label: 'DCA Fader Level',
+			name: 'DCA Fader Level',
 			options: this.faderOptions('DCA', qu['dcaCount'], -1),
 		}
 		if (this.config.model != 'QU16') {
 			actions['level_group'] = {
-				label: 'Group Fader Level',
+				name: 'Group Fader Level',
 				options: this.faderOptions('Group', qu['grpCount'], -1, 99),
 			}
 			actions['level_matrix'] = {
-				label: 'Matrix Fader Level',
+				name: 'Matrix Fader Level',
 				options: this.faderOptions('Matrix', qu['mtxCount'], -1, 99),
 			}
 		}
@@ -406,44 +406,44 @@ module.exports = {
 		/* PAN */
 		// Missing Grp2LR, Mtx2LR, Grp2Mtx
 		actions['pan_input_mix'] = {
-			label: 'Pan Input to Mix',
+			name: 'Pan Input to Mix',
 			options: this.panOptions('Mix', 0, 3, qu['mixStereo'], ['Input channel', this.CHOICES_INPUT_CHANNEL]),
 		}
 		actions['pan_input_lr'] = {
-			label: 'Pan Input to LR',
+			name: 'Pan Input to LR',
 			options: this.panOptions('LR', 1, 6, 0, ['Input channel', this.CHOICES_INPUT_CHANNEL]),
 		}
 		if (this.config.model != 'QU16') {
 			actions['pan_input_group'] = {
-				label: 'Pan Input to Group (Mix mode)',
+				name: 'Pan Input to Group (Mix mode)',
 				options: this.panOptions('Group', qu['grpCount'], 7, 99, ['Input channel', this.CHOICES_INPUT_CHANNEL]),
 			}
 		}
 		actions['pan_stereo_mix'] = {
-			label: 'Pan Stereo to Mix',
+			name: 'Pan Stereo to Mix',
 			options: this.panOptions('Mix', 0, 3, qu['mixStereo'], ['Stereo', this.CHOICES_STEREO_CHANNEL]),
 		}
 		actions['pan_stereo_lr'] = {
-			label: 'Pan Stereo to LR',
+			name: 'Pan Stereo to LR',
 			options: this.panOptions('LR', 1, 6, 0, ['Stereo', this.CHOICES_STEREO_CHANNEL]),
 		}
 		if (this.config.model != 'QU16') {
 			actions['pan_stereo_group'] = {
-				label: 'Pan Stereo to Group (Mix mode)',
+				name: 'Pan Stereo to Group (Mix mode)',
 				options: this.panOptions('Group', qu['grpCount'], 7, 99, ['Stereo', this.CHOICES_STEREO_CHANNEL]),
 			}
 		}
 		actions['pan_fxr_mix'] = {
-			label: 'Pan FX Return to Mix',
+			name: 'Pan FX Return to Mix',
 			options: this.panOptions('Mix', 0, 3, qu['mixStereo'], ['FX Return', this.CHOICES_FX_RETURN]),
 		}
 		actions['pan_fxr_lr'] = {
-			label: 'Pan FX Return to LR',
+			name: 'Pan FX Return to LR',
 			options: this.panOptions('LR', 1, 6, 0, ['FX Return', this.CHOICES_FX_RETURN]),
 		}
 		if (this.config.model != 'QU16') {
 			actions['pan_fxr_group'] = {
-				label: 'Pan FX Return to Group (Mix mode)',
+				name: 'Pan FX Return to Group (Mix mode)',
 				options: this.panOptions('Group', qu['grpCount'], 7, 99, ['FX Return', this.CHOICES_FX_RETURN]),
 			}
 		}
@@ -451,24 +451,24 @@ module.exports = {
 
 		/* LR Assign */
 		actions['lr_assign_input'] = {
-			label: 'Assign Input to LR',
+			name: 'Assign Input to LR',
 			options: this.lrAssignOptions(['Input channel', this.CHOICES_INPUT_CHANNEL]),
 		}
 		actions['lr_assign_stereo'] = {
-			label: 'Assign Stereo to LR',
+			name: 'Assign Stereo to LR',
 			options: this.lrAssignOptions(['Stereo', this.CHOICES_STEREO_CHANNEL]),
 		}
 		actions['lr_assign_fxr'] = {
-			label: 'Assign FX Return to LR',
+			name: 'Assign FX Return to LR',
 			options: this.lrAssignOptions(['FX Return', this.CHOICES_FX_RETURN]),
 		}
 		if (this.config.model != 'QU16') {
 			actions['lr_assign_grp'] = {
-				label: 'Assign Group to LR',
+				name: 'Assign Group to LR',
 				options: this.lrAssignOptions(['Group', this.CHOICES_GROUP]),
 			}
 			actions['lr_assign_mtx'] = {
-				label: 'Assign Matrix to LR',
+				name: 'Assign Matrix to LR',
 				options: this.lrAssignOptions(['Matrix', this.CHOICES_MATRIX]),
 			}
 		}
@@ -476,57 +476,57 @@ module.exports = {
 
 		/* MIX Assign */
 		actions['mix_assign_input'] = {
-			label: 'Assign Input to Mix',
+			name: 'Assign Input to Mix',
 			options: this.mixAssignOptions('Mix', qu['mixCount'], -1, qu['mixStereo'], [
 				'Input channel',
 				this.CHOICES_INPUT_CHANNEL,
 			]),
 		}
 		actions['mix_assign_stereo'] = {
-			label: 'Assign Stereo to Mix',
+			name: 'Assign Stereo to Mix',
 			options: this.mixAssignOptions('Mix', qu['mixCount'], -1, qu['mixStereo'], [
 				'Stereo',
 				this.CHOICES_STEREO_CHANNEL,
 			]),
 		}
 		actions['mix_assign_fxr'] = {
-			label: 'Assign FX Return to Mix',
+			name: 'Assign FX Return to Mix',
 			options: this.mixAssignOptions('Mix', qu['mixCount'], -1, qu['mixStereo'], ['FX Return', this.CHOICES_FX_RETURN]),
 		}
 
 		actions['fxs_assign_input'] = {
-			label: 'Assign Input to FX Send',
+			name: 'Assign Input to FX Send',
 			options: this.mixAssignOptions('FX Send', qu['fxsCount'], 15, 0, ['Input channel', this.CHOICES_INPUT_CHANNEL]),
 		}
 		actions['fxs_assign_stereo'] = {
-			label: 'Assign Stereo to FX Send',
+			name: 'Assign Stereo to FX Send',
 			options: this.mixAssignOptions('FX Send', qu['fxsCount'], 15, 0, ['Stereo', this.CHOICES_STEREO_CHANNEL]),
 		}
 		actions['fxs_assign_fxr'] = {
-			label: 'Assign FX Return to FX Send',
+			name: 'Assign FX Return to FX Send',
 			options: this.mixAssignOptions('FX Send', qu['fxsCount'], 15, 0, ['FX Return', this.CHOICES_FX_RETURN]),
 		}
 
 		if (this.config.model != 'QU16') {
 			actions['fxs_assign_grp'] = {
-				label: 'Assign Group to FX Send',
+				name: 'Assign Group to FX Send',
 				options: this.mixAssignOptions('FX Send', qu['fxsCount'], 15, 0, ['Group', this.CHOICES_GROUP]),
 			}
 			actions['fxs_assign_mtx'] = {
-				label: 'Assign Matrix to FX Send',
+				name: 'Assign Matrix to FX Send',
 				options: this.mixAssignOptions('FX Send', qu['fxsCount'], 15, 0, ['Matrix', this.CHOICES_MATRIX]),
 			}
 
 			actions['grp_assign_input'] = {
-				label: 'Assign Input to Group',
+				name: 'Assign Input to Group',
 				options: this.mixAssignOptions('Group', qu['grpCount'], 7, 99, ['Input channel', this.CHOICES_INPUT_CHANNEL]),
 			}
 			actions['grp_assign_stereo'] = {
-				label: 'Assign Stereo to Group',
+				name: 'Assign Stereo to Group',
 				options: this.mixAssignOptions('Group', qu['grpCount'], 7, 99, ['Stereo', this.CHOICES_STEREO_CHANNEL]),
 			}
 			actions['grp_assign_fxr'] = {
-				label: 'Assign FX Return to Group',
+				name: 'Assign FX Return to Group',
 				options: this.mixAssignOptions('Group', qu['grpCount'], 7, 99, ['FX Return', this.CHOICES_FX_RETURN]),
 			}
 		}
@@ -534,35 +534,35 @@ module.exports = {
 
 		/* MuteGroup Assign */
 		actions['mutegrp_assign_input'] = {
-			label: 'Assign Input to MuteGroup',
+			name: 'Assign Input to MuteGroup',
 			options: this.mixAssignOptions('MuteGroup', qu['muteGroup'], -1, 0, [
 				'Input Channel',
 				this.CHOICES_INPUT_CHANNEL,
 			]),
 		}
 		actions['mutegrp_assign_stereo'] = {
-			label: 'Assign Stereo to MuteGroup',
+			name: 'Assign Stereo to MuteGroup',
 			options: this.mixAssignOptions('MuteGroup', qu['muteGroup'], -1, 0, ['Stereo', this.CHOICES_STEREO_CHANNEL]),
 		}
 		actions['mutegrp_assign_fxs'] = {
-			label: 'Assign FX Send to MuteGroup',
+			name: 'Assign FX Send to MuteGroup',
 			options: this.mixAssignOptions('MuteGroup', qu['muteGroup'], -1, 0, ['FX Send', this.CHOICES_FX_SEND]),
 		}
 		actions['mutegrp_assign_fxr'] = {
-			label: 'Assign FX Return to MuteGroup',
+			name: 'Assign FX Return to MuteGroup',
 			options: this.mixAssignOptions('MuteGroup', qu['muteGroup'], -1, 0, ['FX Return', this.CHOICES_FX_RETURN]),
 		}
 		actions['mutegrp_assign_mix'] = {
-			label: 'Assign Mix to MuteGroup',
+			name: 'Assign Mix to MuteGroup',
 			options: this.mixAssignOptions('MuteGroup', qu['muteGroup'], -1, 0, ['Mix', this.CHOICES_MIX]),
 		}
 		actions['mutegrp_assign_lr'] = {
-			label: 'Assign LR to MuteGroup',
+			name: 'Assign LR to MuteGroup',
 			options: this.mixAssignOptions('MuteGroup', qu['muteGroup'], -1, 0, ['LR', this.CHOICES_LR]),
 		}
 		if (this.config.model != 'QU16') {
 			actions['mutegrp_assign_grp'] = {
-				label: 'Assign Group to MuteGroup',
+				name: 'Assign Group to MuteGroup',
 				options: this.mixAssignOptions('MuteGroup', qu['muteGroup'], -1, 0, ['Group', this.CHOICES_GROUP]),
 			}
 		}
@@ -570,32 +570,32 @@ module.exports = {
 
 		/* DCA Group Assign */
 		actions['dcagrp_assign_input'] = {
-			label: 'Assign Input to DCA',
+			name: 'Assign Input to DCA',
 			options: this.mixAssignOptions('DCA', qu['dcaCount'], -1, 0, ['Input Channel', this.CHOICES_INPUT_CHANNEL]),
 		}
 		actions['dcagrp_assign_stereo'] = {
-			label: 'Assign Stereo to DCA',
+			name: 'Assign Stereo to DCA',
 			options: this.mixAssignOptions('DCA', qu['dcaCount'], -1, 0, ['Stereo', this.CHOICES_STEREO_CHANNEL]),
 		}
 		actions['dcagrp_assign_fxs'] = {
-			label: 'Assign FX Send to DCA',
+			name: 'Assign FX Send to DCA',
 			options: this.mixAssignOptions('DCA', qu['dcaCount'], -1, 0, ['FX Send', this.CHOICES_FX_SEND]),
 		}
 		actions['dcagrp_assign_fxr'] = {
-			label: 'Assign FX Return to DCA',
+			name: 'Assign FX Return to DCA',
 			options: this.mixAssignOptions('DCA', qu['dcaCount'], -1, 0, ['FX Return', this.CHOICES_FX_RETURN]),
 		}
 		actions['dcagrp_assign_mix'] = {
-			label: 'Assign Mix to DCA',
+			name: 'Assign Mix to DCA',
 			options: this.mixAssignOptions('DCA', qu['dcaCount'], -1, 0, ['Mix', this.CHOICES_MIX]),
 		}
 		actions['dcagrp_assign_lr'] = {
-			label: 'Assign LR to DCA',
+			name: 'Assign LR to DCA',
 			options: this.mixAssignOptions('DCA', qu['dcaCount'], -1, 0, ['LR', this.CHOICES_LR]),
 		}
 		if (this.config.model != 'QU16') {
 			actions['dcagrp_assign_grp'] = {
-				label: 'Assign Group to DCA',
+				name: 'Assign Group to DCA',
 				options: this.mixAssignOptions('DCA', qu['dcaCount'], -1, 0, ['Group', this.CHOICES_GROUP]),
 			}
 		}
@@ -603,7 +603,7 @@ module.exports = {
 
 		/* Send Level */
 		actions['sendlev_input_mix'] = {
-			label: 'Level Input to Mix',
+			name: 'Level Input to Mix',
 			options: this.panOptions(
 				'Mix',
 				qu['mixCount'],
@@ -615,12 +615,12 @@ module.exports = {
 		}
 		if (this.config.model != 'QU16') {
 			actions['sendlev_input_group'] = {
-				label: 'Level Input to Group (Mix mode)',
+				name: 'Level Input to Group (Mix mode)',
 				options: this.panOptions('Group', qu['grpCount'], 7, 99, ['Input channel', this.CHOICES_INPUT_CHANNEL], true),
 			}
 		}
 		actions['sendlev_stereo_mix'] = {
-			label: 'Level Stereo to Mix',
+			name: 'Level Stereo to Mix',
 			options: this.panOptions(
 				'Mix',
 				qu['mixCount'],
@@ -632,63 +632,63 @@ module.exports = {
 		}
 		if (this.config.model != 'QU16') {
 			actions['sendlev_stereo_group'] = {
-				label: 'Level Stereo to Group (Mix mode)',
+				name: 'Level Stereo to Group (Mix mode)',
 				options: this.panOptions('Group', qu['grpCount'], 7, 99, ['Stereo', this.CHOICES_STEREO_CHANNEL], true),
 			}
 		}
 		actions['sendlev_fx_return_mix'] = {
-			label: 'Level FX Return to Mix',
+			name: 'Level FX Return to Mix',
 			options: this.panOptions('Mix', qu['mixCount'], -1, qu['mixStereo'], ['FX Return', this.CHOICES_FX_RETURN], true),
 		}
 		if (this.config.model != 'QU16') {
 			actions['sendlev_fx_return_group'] = {
-				label: 'Level FX Return to Group (Mix mode)',
+				name: 'Level FX Return to Group (Mix mode)',
 				options: this.panOptions('Group', qu['grpCount'], 7, 99, ['FX Return', this.CHOICES_FX_RETURN], true),
 			}
 		}
 		actions['sendlev_fx_return_fxs'] = {
-			label: 'Level FX Return to FX Send',
+			name: 'Level FX Return to FX Send',
 			options: this.panOptions('FX Send', qu['fxsCount'], 9, 0, ['FX Return', this.CHOICES_FX_RETURN], true),
 		}
 		/**/
 
 		/* PAFL Select */
 		actions['pafl_input'] = {
-			label: 'PAFL Input',
+			name: 'PAFL Input',
 			options: this.paflOptions('Input Channel', qu['chCount'], -1, 0),
 		}
 		actions['pafl_stereo'] = {
-			label: 'PAFL Stereo',
+			name: 'PAFL Stereo',
 			options: this.paflOptions('Stereo Channel', qu['chStereo'], -1, 0),
 		}
 		actions['pafl_lr'] = {
-			label: 'PAFL LR',
+			name: 'PAFL LR',
 			options: this.paflOptions('LR', 1, -1, 0),
 		}
 		actions['pafl_mix'] = {
-			label: 'PAFL Mix',
+			name: 'PAFL Mix',
 			options: this.paflOptions('Mix', qu['mixCount'], -1, qu['mixStereo'], 0),
 		}
 		actions['pafl_fx_send'] = {
-			label: 'PAFL FX Send',
+			name: 'PAFL FX Send',
 			options: this.paflOptions('FX Send', qu['fxsCount'], -1, 0),
 		}
 		actions['pafl_fx_return'] = {
-			label: 'PAFL FX Return',
+			name: 'PAFL FX Return',
 			options: this.paflOptions('FX Return', qu['fxrCount'], -1, 0),
 		}
 		actions['pafl_dca'] = {
-			label: 'PAFL DCA',
+			name: 'PAFL DCA',
 			options: this.paflOptions('DCA', qu['dcaCount'], -1, 0),
 		}
 
 		if (this.config.model != 'QU16') {
 			actions['pafl_group'] = {
-				label: 'PAFL Group',
+				name: 'PAFL Group',
 				options: this.paflOptions('Group', qu['grpCount'], -1, 99),
 			}
 			actions['pafl_matrix'] = {
-				label: 'PAFL Matrix',
+				name: 'PAFL Matrix',
 				options: this.paflOptions('Matrix', qu['mtxCount'], -1, 99),
 			}
 		}
@@ -696,7 +696,7 @@ module.exports = {
 
 		/* Scene Recall */
 		actions['scene_recall'] = {
-			label: 'Scene recall',
+			name: 'Scene recall',
 			options: [
 				{
 					type: 'dropdown',
@@ -710,7 +710,7 @@ module.exports = {
 		}
 
 		actions['scene_step'] = {
-			label: 'Scene step',
+			name: 'Scene step',
 			options: [
 				{
 					type: 'number',
@@ -726,7 +726,7 @@ module.exports = {
 		/**/
 
 		actions['channel_name'] = {
-			label: 'Channel name',
+			name: 'Channel name',
 			options: [
 				{
 					type: 'dropdown',
@@ -742,7 +742,7 @@ module.exports = {
 
 		/* Local Preamp */
 		actions['preloc_48_input'] = {
-			label: 'Preamp Input 48V',
+			name: 'Preamp Input 48V',
 			options: [
 				{
 					type: 'dropdown',
@@ -764,7 +764,7 @@ module.exports = {
 
 		/* MMC */
 		actions['mmc'] = {
-			label: 'MMC Transport Control',
+			name: 'MMC Transport Control',
 			options: [
 				{
 					type: 'dropdown',
@@ -788,7 +788,7 @@ module.exports = {
 
 		/* Shutdown */
 		actions['shutdown'] = {
-			label: 'Shutdown',
+			name: 'Shutdown',
 		}
 		/**/
 

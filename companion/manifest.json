@@ -1,0 +1,26 @@
+{
+	"id": "allenheath-qu",
+	"name": "Allen & Heath QU",
+	"shortname": "QU",
+	"description": "Control Allen & Heath QU series mixing consoles (QU-16, QU-24, QU-32, QU-SB, QU-Pac) via MIDI over TCP",
+	"version": "2.0.0",
+	"license": "MIT",
+	"repository": "https://github.com/v-berlin/companion-module-allenheath-qu",
+	"bugs": "https://github.com/v-berlin/companion-module-allenheath-qu/issues",
+	"maintainers": [
+		{
+			"name": "Max Kiusso",
+			"email": "max@kiusso.net"
+		}
+	],
+	"legacyIds": [],
+	"runtime": {
+		"type": "node22",
+		"api": "nodejs-ipc",
+		"apiVersion": "^1.0.0",
+		"entrypoint": "index.js"
+	},
+	"manufacturer": "Allen & Heath",
+	"products": ["QU-16", "QU-24", "QU-32", "QU-SB", "QU-Pac"],
+	"keywords": ["mixer", "audio", "midi"]
+}

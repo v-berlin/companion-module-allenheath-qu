@@ -12,7 +12,8 @@ module.exports = {
 			let bg = this.rgb(col['bg'][0], col['bg'][1], col['bg'][2])
 
 			feedbacks[nam] = {
-				label: `${typ} ${lab}`,
+				type: 'advanced',
+				name: `${typ} ${lab}`,
 				description: 'Change colour',
 				options: [
 					{
@@ -36,10 +37,9 @@ module.exports = {
 						minChoicesForSearch: 0,
 					},
 				],
-				callback: (feedback, bank) => {
+				callback: (feedback) => {
 					return this.feedbackStatus(
 						feedback,
-						bank,
 						`${typ.toLowerCase()}_` + (parseInt(feedback.options.channel) + ofs)
 					)
 				},
@@ -118,15 +118,10 @@ module.exports = {
 		return feedbacks
 	},
 
-	feedbackStatus: function (feedback, bank, val) {
-		var ret = {}
-
+	feedbackStatus: function (feedback, val) {
 		if (this.fdbState[val]) {
-			ret = { color: feedback.options.fg, bgcolor: feedback.options.bg }
-		} else {
-			ret = { color: bank.color, bgcolor: bank.bgcolor }
+			return { color: feedback.options.fg, bgcolor: feedback.options.bg }
 		}
-
-		return ret
+		return {}
 	},
 }

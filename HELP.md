@@ -1,6 +1,10 @@
 # Allen & Heath QU module
 
-Controls the Allen & Heath QU.
+Controls the Allen & Heath QU series mixing consoles via MIDI over TCP/IP.
+
+## Compatibility
+
+This module version (2.x) requires **Bitfocus Companion 3.x or 4.x** (tested with Companion 4.3.1).
 
 ## Functions:
 *	Mutes
@@ -24,14 +28,29 @@ Controls the Allen & Heath QU.
 
 Created by referring to "QU Midi Protocol v.1.9" manual.
 
-Current version: 1.0.7
+Current version: 2.0.0
 
-Start version: 1.0.0
+## Changelog
 
-New in v.1.0.1
-* Fix level
-* New variables
-* Presets
+New in v.2.0.0
+* Ported to @companion-module/base SDK (Companion 3 / 4 compatible)
+* Updated module manifest (companion/manifest.json)
+* Updated action/feedback/variable/preset definitions to SDK v3 format
+* TCP helper updated to use TCPHelper from @companion-module/base
+
+New in v.1.0.7
+* Add QU-Pac & QU-SB config
+* Add shutdown action
+
+New in v.1.0.6
+* Fix issue #9
+
+New in v.1.0.5
+* Fix issue #6
+
+New in v.1.0.4
+* Add scene step
+* Add currentScene variable
 
 New in v.1.0.3
 * Fix feedbacks
@@ -39,26 +58,17 @@ New in v.1.0.3
 * Add PAFL feedbacks
 * Add PAFL presets
 
-New in v.1.0.4
-* Add scene step
-* Add currentScene variable
-
-New in v.1.0.5
-* Fix issue #6
-
-New in v.1.0.6
-* Fix issue #9
-
-New in v.1.0.7
-* Add QU-Pac & QU-SB config
-* Add shutdown action
+New in v.1.0.1
+* Fix level
+* New variables
+* Presets
 
 ## Configuring:
 
 ### New instance
 First step after adding QU instance is to setting it up:
 
-*	Name: 					the INSTANCE name you want
+*	Name: 					the INSTANCE name you want (used as variable prefix)
 *	Target IP:				IP to reach your QU (needs on the same net)
 *	Model:					your QU model
 
@@ -68,10 +78,10 @@ First step after adding QU instance is to setting it up:
 *	There are two specifc values on level dropdown menu (at the top) when you configuring fader / send level.
 
 ### Fader level and Channel name on button
-When you configure a button, in button text start typing <b>$(</b> then system will suggests you all variables you can use.
+When you configure a button, in button text start typing <b>$(</b> then system will suggest all variables you can use.
 
-All variable/text can be concats to produce complex string. Use <b>\n</b> to make new line.
-Example:
+All variable/text can be concatenated to produce complex strings. Use <b>\n</b> to make a new line.
+Example (replace `QU` with your instance name):
 
 	$(QU:ch_name_32)\n$(QU:level_input_32) dB
 
@@ -118,3 +128,4 @@ TO (ex: 0 => MIX 1; 5 => MIX 7/8; 17 => FX Send 2)
 *	fxs			16 -> 19
 
 Example: if you want the level of "Stereo 3 into Group 3/4", write <b>$(QU:sendlev_stereo_group_66_9)</b>
+
