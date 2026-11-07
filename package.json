@@ -1,6 +1,6 @@
 {
 	"name": "allenheath-qu",
-	"version": "1.0.9",
+	"version": "2.0.0",
 	"api_version": "1.0.0",
 	"keywords": [
 		"QU16",
@@ -18,10 +18,11 @@
 		"QUPAC"
 	],
 	"shortname": "QU",
-	"description": "Allen & Heath QU module for Companion",
+	"description": "Allen & Heath QU proxy client module for Companion",
 	"main": "index.js",
 	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1"
+		"test": "echo \"No tests defined\"",
+		"start-proxy": "node qu-server.js"
 	},
 	"author": "Max Kiusso",
 	"license": "MIT",
