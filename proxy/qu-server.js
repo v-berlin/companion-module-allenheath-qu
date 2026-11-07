@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 const net = require('net')
-const { QuCore, MIDI_PORT } = require('./qu-core')
+const { QuCore, MIDI_PORT } = require('../qu-core')
 
 const PROXY_HOST = process.env.QU_PROXY_HOST || '0.0.0.0'
 const PROXY_PORT = parseInt(process.env.QU_PROXY_PORT || '51326', 10)

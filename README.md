@@ -9,9 +9,9 @@ This project now runs a single standalone proxy server that connects to the mixe
 
 ## Components
 
-- `qu-server.js`  
+- `proxy/qu-server.js`  
   Standalone Node.js proxy server (single QU connection, multiple Companion clients).
-- `index.js`  
+- `companion/index.js`  
   Companion module that sends actions to the proxy and receives shared state updates.
 - `qu-core.js`  
   Shared QU MIDI protocol/state logic used by the proxy server.
@@ -20,6 +20,16 @@ This project now runs a single standalone proxy server that connects to the mixe
 
 ```bash
 npm run start-proxy
+```
+
+Or run it as Docker:
+
+```bash
+docker build -f proxy/Dockerfile -t qu-proxy .
+docker run --rm -p 51326:51326 \
+  -e QU_HOST=192.168.0.6 \
+  -e QU_MODEL=QU24 \
+  qu-proxy
 ```
 
 Optional environment variables:
