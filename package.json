@@ -19,10 +19,10 @@
 	],
 	"shortname": "QU",
 	"description": "Allen & Heath QU proxy client module for Companion",
-	"main": "index.js",
+	"main": "companion/index.js",
 	"scripts": {
 		"test": "echo \"No tests defined\"",
-		"start-proxy": "node qu-server.js"
+		"start-proxy": "node proxy/qu-server.js"
 	},
 	"author": "Max Kiusso",
 	"license": "MIT",

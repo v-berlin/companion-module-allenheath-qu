@@ -6,7 +6,7 @@
  */
 
 const net = require('net')
-let instance_skel = require('../../instance_skel')
+let instance_skel = require('../../../instance_skel')
 let actions = require('./actions')
 let feedbacks = require('./feedbacks')
 let variables = require('./variables')
